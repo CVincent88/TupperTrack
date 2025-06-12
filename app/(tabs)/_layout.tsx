@@ -1,43 +1,78 @@
-import { Tabs } from 'expo-router';
+import { Tabs, router } from 'expo-router';
 import React from 'react';
-import { Platform } from 'react-native';
 
 import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
+export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
+        tabBarActiveTintColor: "#000",
+        headerShown: true,
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          fontSize: 26,
+          fontWeight: 'bold',
+          color: "#000",
+          fontFamily: 'Inter_600SemiBold',
+        },
+        headerStyle: {
+          backgroundColor: "#FFFFFF",
+
+        },
         tabBarButton: HapticTab,
         tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
+        tabBarStyle: {
+          backgroundColor: "#FFF",
+        }
+        // tabBarStyle: Platform.select({
+        //   ios: {
+        //     // Use a transparent background on iOS to show the blur effect
+        //     position: 'absolute',
+        //   },
+        //   default: {},
+        // }),
       }}>
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          headerTitleAlign: "center",
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'home-sharp' : 'home-outline'} color={color} size={22} />
+          ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="meals"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'Meals',
+          headerTitleAlign: "center",
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'fish-sharp' : 'fish-outline'} color={color} size={22} />
+          ),
+          headerRight: () => (
+            <Ionicons
+              name="add"
+              size={24}
+              color="#000"
+              marginRight={16}
+              style={{ marginRight: 16 }}
+              onPress={() => router.push('/meal/createMeal')}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="clients"
+        options={{
+          title: 'Clients',
+          headerTitleAlign: "center",
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'man-sharp' : 'man-outline'} color={color} size={22} />
+          ),
         }}
       />
     </Tabs>
